@@ -1,0 +1,151 @@
+<!-- Campaign Monitor subscription form -->
+
+<!-- 
+
+Because Seamless uses a form to display content, we can't use a real form for
+the Campaign Monitor details. We need to create a container with inputs, apply
+the appropriate classes so it won't display without JavaScript, then hijack the
+form submission and redirect the user to the Campaign Monitor submission page,
+complete with query string based on the form's values.
+
+If JavaScript is not available, we'll provide a link to the sign-up page.
+
+                                                                             -->
+
+<!-- Input container -->
+
+<div id="campaign-monitor" class="js-only se-form-container">
+
+    <div class="item name">
+
+        <label for="fieldName">Name</label>
+
+        <input id="fieldName" name="cm-name" type="text" />
+
+    </div>
+
+    <div class="item email">
+    
+        <label for="fieldEmail">Email<span class="se-form-required-asterisk"> * </span> <span class="se-form-required-text">(required)</span></label>
+
+        <input id="fieldEmail" name="cm-okluyd-okluyd" type="text" />
+
+        <div class="error">Please enter a valid email address.</div>
+
+    </div>
+    
+    <div class="item organisation">
+    
+        <label for="fielddhijdd">School/&#8203;organisation</label>
+    
+        <input id="fielddhijdd" name="cm-f-dhijdd" type="text" />
+    
+    </div>
+  
+    <div class="item subscribe-to">
+    
+        <span>Subscribe to<span class="se-form-required-asterisk"> * </span> <span class="se-form-required-text">(required)</span></span>
+    
+        <table>
+      
+            <tbody>
+        
+                <tr>
+          
+                    <td>
+                    
+                        <input id="fielddhiydt-0" name="cm-fo-dhiydt" value="697793" type="checkbox" checked /> <label for="fielddhiydt-0">e-news</label>
+                        
+                    </td>
+        
+                </tr>
+                
+                <!-- Repeat as necessary -->
+            
+            </tbody>
+            
+        </table>
+    
+        <div class="error">Please choose at least one mailing list.</div>
+        
+    </div>
+  
+    <div class="item">
+    
+        <input type="submit" value="Submit" />
+    
+    </div>
+
+</div>
+
+<!-- End input container -->
+
+
+<!-- Fallback link for browsers without JavaScript -->
+
+<!--
+
+Get the link from Campaign Monitor > Sign up forms > Link to a subscribe page
+
+                                                                             -->
+<noscript>
+
+    <p><a href="<!-- Address of subscribe page -->" target="_blank">Subscribe to our mailing lists</a> to get the latest from <!-- insert name here -->.</p>
+
+</noscript>
+
+<!-- End fallback link for browsers without JavaScript -->
+
+
+<!-- Submission script -->
+
+<!--
+
+Get all the necessary fields and links from Campaign Monitor > Sign up forms > 
+Copy/paste a form to your site - make sure you also set the appropriate success
+page that is used when the subscriber completes the form.
+                                                                             -->
+
+<script type="text/javascript">
+
+    $('#campaign-monitor input[type=submit]').click(function() {
+        var emailComplete = false,
+            emailRegExp = new RegExp(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i),  // RegExp from http://www.regular-expressions.info/email.html
+            submissionURL = ''; // URL to which the form data will be sent. Include trailing slash.
+            subscribeToComplete = false;
+            
+        // Check that the 'subscribe to' field has been completed
+        if ($('.subscribe-to input:checked').length) {
+            // Flag the 'subscribe to' field as complete
+            subscribeToComplete = true;
+            // Hide the error message
+            $('.subscribe-to div.error').hide();
+        } else {
+            // Display an error message if it's incomplete
+            $('.item.subscribe-to div.error').show();
+        }
+
+        // Check that the email field contains a valid email address
+        if (emailRegExp.test($('#fieldEmail').val())) {
+            // Flag the email field as complete
+            emailComplete = true;
+            // Hide the error message
+            $('.item.email div.error').hide();
+        } else {
+            // Display an error message if it's invalid
+            $('.item.email div.error').show();
+        }
+        
+        // Submit the form if both mandatory fields are complete
+        if (emailComplete && subscribeToComplete) {
+            location.href = submissionURL + '?' + $('#campaign-monitor input').serialize();
+        }
+        
+        return false;
+    });
+    
+</script>
+
+<!-- End submission script -->
+
+<!-- End Campaign Monitor subscription form -->
